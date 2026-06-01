@@ -1,0 +1,27 @@
+# Environnements virtuels
+venv/
+.venv/
+env/
+
+# Cache HuggingFace (modèles téléchargés, ~900 Mo)
+.cache/
+~/.cache/huggingface/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VisionAI — Image Caption</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+  <header class="hdr">
+    <div class="app-logo">
+      <div class="app-logo-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <rect x="1" y="4" width="20" height="14" rx="3" stroke="#fff" stroke-width="1.5"/>
+          <circle cx="7.5" cy="10" r="2.5" stroke="#FFD080" stroke-width="1.5"/>
+          <path d="M1 16 L7 11 L11 14 L15 10 L21 16" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="18" cy="4" r="3" fill="#FFD040"/>
+        </svg>
+      </div>
+      <div class="app-logo-name">
+        <span class="app-logo-name-top">VisionAI</span>
+        <span class="app-logo-name-sub">Image Caption</span>
+      </div>
+    </div>
+    <div class="hdr-badge">BLIP · HuggingFace</div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-pill">
+      <div class="pulse"></div>
+      Vision × Langage · IA
+    </div>
+    <h1 class="hero-title">Chaque image<br/><em>raconte une histoire</em></h1>
+    <p class="hero-sub">Uploadez une photo, l'IA génère instantanément une description précise grâce au modèle BLIP.</p>
+  </section>
+
+  <main class="app-body">
+    <input type="file" id="fileInput" accept="image/png,image/jpeg,image/jpg,image/webp" hidden />
+
+    <div class="upload-card" id="uploadCard">
+      <div class="drop-zone" id="dropZone">
+        <div class="drop-icon-ring">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+            <rect x="3" y="7" width="24" height="18" rx="3" stroke="#FF6200" stroke-width="1.8"/>
+            <circle cx="10.5" cy="14" r="3" stroke="#FF6200" stroke-width="1.8"/>
+            <path d="M3 20 L10 14 L16 19 L21 14 L27 20" stroke="#FF6200" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <path d="M15 4 L15 1 M12 3 L15 1 L18 3" stroke="#FFAA40" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+        <p class="drop-title">Glissez votre image ici</p>
+        <p class="drop-hint">ou parcourez vos fichiers</p>
+        <button class="btn-pick" id="btnBrowse">Choisir une image</button>
+        <p class="drop-fmt">PNG · JPG · WEBP · max 10 MB</p>
+      </div>
+      <div class="preview-zone hidden" id="previewZone">
+        <img id="previewImg" src="" alt="Aperçu" class="preview-img"/>
+        <div class="btn-chg-wrap">
+          <button class="btn-chg" id="btnChange">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            Changer
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-gen" id="btnGen" disabled>
+      <span class="btn-text" id="bText">Générer la légende</span>
+      <span class="btn-arrow" id="bArrow">→</span>
+      <span class="dots hidden" id="bLoad">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      </span>
+    </button>
+
+    <div class="res-card hidden" id="resCard">
+      <div class="res-top">
+        <span class="res-chip">Légende générée</span>
+        <span class="res-meta" id="resMeta"></span>
+      </div>
+      <p class="res-caption" id="capText"></p>
+      <div class="res-actions">
+        <button class="btn-act" id="btnCopy">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+          Copier
+        </button>
+        <button class="btn-act" id="btnDl">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Télécharger
+        </button>
+        <button class="btn-act btn-reset" id="btnReset">Nouvelle image</button>
+      </div>
+    </div>
+
+    <div class="err-card hidden" id="errCard">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#B03030" stroke-width="2" style="flex-shrink:0;margin-top:1px">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <p id="errText">Une erreur s'est produite.</p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="ft-left">
+      <img src="data:image/webp;base64,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" alt="ENSTAB" class="ft-enstab-logo"/>
+      <div class="ft-school">
+        <span class="ft-school-name">ENSTAB</span>
+        <span class="ft-school-sub">École Nationale des Sciences et Technologies Avancées de Borj Cédria</span>
+      </div>
+    </div>
+    <div class="ft-right">
+      <span class="ft-author">Made by Tasnim Boudriga · EAN</span>
+      <div class="ft-tech">
+        <span class="ft-tag">BLIP</span>
+        <span class="ft-tag">FastAPI</span>
+        <span class="ft-tag">PyTorch</span>
+        <span class="ft-tag">HuggingFace</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/js/main.js"></script>
+</body>
+</html>
