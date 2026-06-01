@@ -117,7 +117,8 @@ image-captioning-ai/
 ```
 
 ---
-
+## video demo 
+https://www.loom.com/share/8a41b0bc2f524bcc9dcb6de772e1ad62
 
 
 ## Auteur
